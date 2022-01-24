@@ -21,7 +21,7 @@ pipeline {
         }
         stage ('Delivery artifactory') {
             steps {
-                sh 'scp /home/ubuntu/jenkins/workspace/build/spring_petclinic/target/*.jar ubuntu@18.170.74.194:/home/ubuntu/artifactory'
+                sh 'sudo scp -i /home/ubuntu/.ssh/terraform.pem /home/ubuntu/jenkins/workspace/build/spring_petclinic/target/*.jar ubuntu@18.170.74.194:/home/ubuntu/artifactory/'
             }
         }
     }
