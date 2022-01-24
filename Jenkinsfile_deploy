@@ -15,8 +15,7 @@ pipeline {
         }
         stage('Start application') {
             steps {
-                sh 'sudo systemctl stop spring-petclinic'
-                sh 'sudo systemctl start spring-petclinic'
+                sh 'sudo ssh -i /home/ubuntu/.ssh/terraform.pem ubuntu@13.40.54.38 "sudo systemctl stop spring-petclinic && sudo systemctl start spring-petclinic"'
             }
         }
     }
