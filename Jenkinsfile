@@ -17,15 +17,12 @@ pipeline {
                 sudo chmod +x mvnw
                 sudo ./mvnw package
                 '''
-                stash name: "artifact", includes: "spring_petclinic/target/*.jar"
             }
         }
         stage ('Delivery artifactory') {
-                 steps {
-                    node('node_artifactory'){
-                        unstash name: "artifact" 
-                    }
-                 }
+            steps {
+                sh 'scp /home/ubuntu/jenkins/workspace/build/spring_petclinic/target/*.jar ubuntu@18.170.74.194:/home/ubuntu/artifactory'
+            }
         }
     }
 }
