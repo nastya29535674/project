@@ -7,19 +7,16 @@ pipeline {
     stages {
         stage('Deploy artifact') {
             steps {
-                node('node_artifactory'){
-                   sh 'cp /home/ubuntu/workspace/Project_build/spring_petclinic/target/*.jar .'
-                   stash name: "artifact", includes: "*.jar"
-                }
+                sh '''
+                sudo scp -i /home/ubuntu/.ssh/terraform.pem ubuntu@18.170.74.194:/home/ubuntu/artifactory/*.jar .
+                sudo scp -i /home/ubuntu/.ssh/terraform.pem *.jar ubuntu@13.40.54.38:/home/ubuntu/project/
+                '''
             }
         }
         stage('Start application') {
             steps {
-                node('node_prod'){
-                    sh 'sudo systemctl stop spring-petclinic'
-                    unstash name: "artifact"
-                    sh 'sudo systemctl start spring-petclinic'
-                }
+                sh 'sudo systemctl stop spring-petclinic'
+                sh 'sudo systemctl start spring-petclinic'
             }
         }
     }
